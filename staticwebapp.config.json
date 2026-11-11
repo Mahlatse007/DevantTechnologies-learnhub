@@ -1,0 +1,23 @@
+{
+  "routes": [
+    { "route": "/learnhub", "rewrite": "/index.html" },
+    { "route": "/login", "rewrite": "/login.html" },
+    { "route": "/register", "rewrite": "/register.html" },
+    { "route": "/privacy", "rewrite": "/privacy.html" },
+    { "route": "/terms", "rewrite": "/terms.html" },
+
+    { "route": "/student", "redirect": "/login", "statusCode": 302 },
+    { "route": "/student.html", "redirect": "/login", "statusCode": 302 },
+    { "route": "/tutor", "redirect": "/login", "statusCode": 302 },
+    { "route": "/tutor.html", "redirect": "/login", "statusCode": 302 },
+    { "route": "/admin", "redirect": "/login", "statusCode": 302 },
+    { "route": "/admin.html", "redirect": "/login", "statusCode": 302 }
+  ],
+  "globalHeaders": {
+    "Content-Security-Policy": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
+    "Referrer-Policy": "same-origin",
+    "Permissions-Policy": "camera=(), microphone=(), geolocation=()"
+  }
+}

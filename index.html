@@ -13,6 +13,8 @@
         <header class="site-header">
             <div class="wrap">
                 <a class="brand" href="/learnhub">LearnHub.</a>
+
+                <!--NAV BAR-->
                 <nav class="site-nav" aria-label="Main">
                     <a class="hide-sm" href="/learnhub#why">Why LearnHub</a>
                     <a class="hide-sm" href="/learnhub#reviews">Reviews</a>
@@ -76,6 +78,40 @@
             </div>
         </section>
 
+        <!-- EstimateNumber of students, number of subjects, grade/ level, Number of Lessons -->
+
+        <section class="estimate">
+            <div class="wrap">
+                <div class="section-head center">
+                    <p class="eyebrow">Estimate</p>
+                    <h2>How much will it cost?</h2>
+                    <p>We charge per session, per subject, with no hidden fees. The total depends on the number of sessions you need.</p>
+                </div>
+                <div class="estimate-grid">
+                    <div class="card"><h3>Number of Student(s)</h3>
+                        <input id="nostudents" type="number" required>
+                    </div>
+                    <div class="card"><h3>Number of Subjects</h3>
+                        <input id="nosubjects" type="number" required>
+                    </div>
+                    <div class="card"><h3>Grade or Level</h3>
+                        <select id="grade" required><option value="" selected disabled>Choose one</option>
+                            <option value="Grade 8 - Grade 9">Grade 8 - Grade 9</option>
+                            <option value="Grade 10 - Grade 12">Grade 10 - Grade 12</option>
+                            <option value="Undergraduate">Undergraduate</option></select>
+                    </div>
+                    <div class="card"><h3>Number of sessions</h3>
+                        <input id="nosession" type="number" required>
+                    </div>
+                    <div class="card"><h3>Estimated cost:</h3><p class="cost" id="estimate-cost" role="alert"></p></div>
+                    <button class="btn block" type="submit" id="estimate-btn">
+                        Calculate
+                    </button>
+
+                </div>
+            </div>
+        </section>
+        
         <section class="band">
             <div class="wrap">
                 <h2>Ready to start learning?</h2>
@@ -84,6 +120,7 @@
             </div>
         </section>
 
+    <!-- CONTACT FORM -->
         <section id="contact" class="white">
             <div class="wrap">
                 <div class="section-head">

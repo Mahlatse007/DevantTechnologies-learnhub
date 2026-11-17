@@ -63,154 +63,6 @@ function val(id) {
   return document.getElementById(id).value;
 }
 
-//Estimate cost
-const PRICING = {
-  "Grade 8 - Grade 9":   { base: 250, extraStudent: 50,  extraSubject: 20 },
-  "Grade 10 - Grade 12": { base: 300, extraStudent: 50,  extraSubject: 20 },
-  "Undergraduate":       { base: 350, extraStudent: 100, extraSubject: 50 }
-};
-
-const btn          = document.getElementById("estimate-btn");
-const output       = document.getElementById("estimate-cost");
-const studentsEl   = document.getElementById("nostudents");
-const subjectsEl   = document.getElementById("nosubjects");
-const sessionsEl   = document.getElementById("nosession");
-const gradeEl      = document.getElementById("grade");
-
-// Lock the other field when one of them goes above 1
-function enforceRules() {
-  const students = parseInt(studentsEl.value, 10) || 0;
-  const subjects = parseInt(subjectsEl.value, 10) || 0;
-
-  if (students > 1) {
-    subjectsEl.value = 1;
-    subjectsEl.disabled = true;
-    subjectsEl.title = "Multiple students can only take 1 subject.";
-  } else {
-    subjectsEl.disabled = false;
-    subjectsEl.title = "";
-  }
-
-  if (subjects > 1) {
-    studentsEl.value = 1;
-    studentsEl.disabled = true;
-    studentsEl.title = "Multiple subjects are only available for 1 student.";
-  } else {
-    studentsEl.disabled = false;
-    studentsEl.title = "";
-  }
-}
-
-studentsEl.addEventListener("input", enforceRules);
-subjectsEl.addEventListener("input", enforceRules);
-
-btn.addEventListener("click", () => {
-  const students = parseInt(studentsEl.value, 10);
-  const subjects = parseInt(subjectsEl.value, 10);
-  const sessions = parseInt(sessionsEl.value, 10);
-  const grade    = gradeEl.value;
-
-  // Validation
-  if (!students || !subjects || !sessions || !grade ||
-      students < 1 || subjects < 1 || sessions < 1) {
-    output.textContent = "Please fill in all fields with valid numbers.";
-    return;
-  }
-
-  // Restriction: more students OR more subjects, not both
-  if (students > 1 && subjects > 1) {
-    output.textContent =
-      "You can have more than 1 student or more than 1 subject, but not both.";
-    return;
-  }
-
-  const { base, extraStudent, extraSubject } = PRICING[grade];
-
-  let perSession = 0;
-
-  if (students > 1) {
-    // 1 subject, several students
-    for (let s = 1; s <= students; s++) {
-      perSession += base - (s > 1 ? extraStudent : 0);
-    }
-  } else {
-    // 1 student, several subjects
-    for (let sub = 1; sub <= subjects; sub++) {
-      perSession += base - (sub > 1 ? extraSubject : 0);
-    }
-  }
-
-  const total = perSession * sessions;
-
-  output.textContent = "R" + total.toLocaleString("en-ZA");
-});
-
-// // Pricing structure
-// document.getElementById("estimate-btn").addEventListener("click", function (event) {
-//     event.preventDefault();
-
-//     // Get input values
-//     const students = parseInt(document.getElementById("nostudents").value);
-//     const subjects = parseInt(document.getElementById("nosubjects").value);
-//     const grade = document.getElementById("grade").value;
-//     const sessions = parseInt(document.getElementById("nosession").value);
-
-//     // Validate inputs
-//     if (!students || students < 1 ||
-//         !subjects || subjects < 1 ||
-//         !sessions || sessions < 1 ||
-//         !grade) {
-//         document.getElementById("estimate-cost").textContent =
-//             "Please enter valid values in all fields.";
-//         return;
-//     }
-
-//     let basePrice;
-//     let studentDiscount;
-//     let subjectDiscount;
-
-    
-//     if (grade === "Grade 8 - Grade 9") {
-//         basePrice = 250;
-//         studentDiscount = 50;
-//         subjectDiscount = 20;
-
-//     } else if (grade === "Grade 10 - Grade 12") {
-//         basePrice = 300;
-//         studentDiscount = 50;
-//         subjectDiscount = 20;
-
-//     } else if (grade === "Undergraduate") {
-//         basePrice = 350;
-//         studentDiscount = 100;
-//         subjectDiscount = 50;
-
-//     } else {
-//         document.getElementById("estimate-cost").textContent =
-//             "Please select a valid grade category.";
-//         return;
-//     }
-
-//     // Calculate discounts
-//     const extraStudentDiscount = (students - 1) * studentDiscount;
-//     const extraSubjectDiscount = (subjects - 1) * subjectDiscount;
-
-//     // Calculate price per session
-//     let pricePerSession = basePrice
-//         - extraStudentDiscount
-//         - extraSubjectDiscount;
-
-//     // Prevent negative pricing
-//     pricePerSession = Math.max(0, pricePerSession);
-
-//     // Calculate total cost
-//     const totalCost = pricePerSession * sessions;
-
-//     // Display result
-//     document.getElementById("estimate-cost").innerHTML =
-//         `R${totalCost.toFixed(2)} 
-//         <small>(R${pricePerSession.toFixed(2)} per session)</small>`;
-// });
 
 // form submit with a disabled button and an inline message.
 function handleForm(form, onSubmit) {
@@ -452,3 +304,86 @@ async function loadDashboard() {
 }
 
 if (page === "student" || page === "tutor" || page === "admin") loadDashboard();
+
+//Estimate cost
+const PRICING = {
+  "Grade 8 - Grade 9":   { base: 250, extraStudent: 50,  extraSubject: 20 },
+  "Grade 10 - Grade 12": { base: 300, extraStudent: 50,  extraSubject: 20 },
+  "Undergraduate":       { base: 350, extraStudent: 100, extraSubject: 50 }
+};
+
+const btn          = document.getElementById("estimate-btn");
+const output       = document.getElementById("estimate-cost");
+const studentsEl   = document.getElementById("nostudents");
+const subjectsEl   = document.getElementById("nosubjects");
+const sessionsEl   = document.getElementById("nosession");
+const gradeEl      = document.getElementById("grade");
+
+// Lock the other field when one of them goes above 1
+function enforceRules() {
+  const students = parseInt(studentsEl.value, 10) || 0;
+  const subjects = parseInt(subjectsEl.value, 10) || 0;
+
+  if (students > 1) {
+    subjectsEl.value = 1;
+    subjectsEl.disabled = true;
+    subjectsEl.title = "Multiple students can only take 1 subject.";
+  } else {
+    subjectsEl.disabled = false;
+    subjectsEl.title = "";
+  }
+
+  if (subjects > 1) {
+    studentsEl.value = 1;
+    studentsEl.disabled = true;
+    studentsEl.title = "Multiple subjects are only available for 1 student.";
+  } else {
+    studentsEl.disabled = false;
+    studentsEl.title = "";
+  }
+}
+
+studentsEl.addEventListener("input", enforceRules);
+subjectsEl.addEventListener("input", enforceRules);
+
+btn.addEventListener("click", () => {
+  const students = parseInt(studentsEl.value, 10);
+  const subjects = parseInt(subjectsEl.value, 10);
+  const sessions = parseInt(sessionsEl.value, 10);
+  const grade    = gradeEl.value;
+
+  // Validation
+  if (!students || !subjects || !sessions || !grade ||
+      students < 1 || subjects < 1 || sessions < 1) {
+    output.textContent = "Please fill in all fields with valid numbers.";
+    return;
+  }
+
+  // Restriction: more students OR more subjects, not both
+  if (students > 1 && subjects > 1) {
+    output.textContent =
+      "You can have more than 1 student or more than 1 subject, but not both.";
+    return;
+  }
+
+  const { base, extraStudent, extraSubject } = PRICING[grade];
+
+  let perSession = 0;
+
+  if (students > 1) {
+    // 1 subject, several students
+    for (let s = 1; s <= students; s++) {
+      perSession += base - (s > 1 ? extraStudent : 0);
+    }
+  } else {
+    // 1 student, several subjects
+    for (let sub = 1; sub <= subjects; sub++) {
+      perSession += base - (sub > 1 ? extraSubject : 0);
+    }
+  }
+
+  const total = perSession * sessions;
+
+  output.textContent = "R" + total.toLocaleString("en-ZA");
+});
+

@@ -88,26 +88,28 @@
                     <p>We charge per session, per subject, with no hidden fees. The total depends on the number of sessions you need.</p>
                 </div>
                 <div class="estimate-grid">
-                    <div class="card"><h3>Number of Student(s)</h3>
-                        <input id="nostudents" type="number" required>
-                    </div>
-                    <div class="card"><h3>Number of Subjects</h3>
-                        <input id="nosubjects" type="number" required>
-                    </div>
-                    <div class="card"><h3>Grade or Level</h3>
+                    <div class="card">
+                        
+                        <h3>Number of Student(s)</h3>
+                        <input id="nostudents" type="number" required><br><br>
+
+                        <h3>Number of Subjects</h3>
+                        <input id="nosubjects" type="number" required><br><br>
+
+                        <h3>Grade or Level</h3>
                         <select id="grade" required><option value="" selected disabled>Choose one</option>
                             <option value="Grade 8 - Grade 9">Grade 8 - Grade 9</option>
                             <option value="Grade 10 - Grade 12">Grade 10 - Grade 12</option>
-                            <option value="Undergraduate">Undergraduate</option></select>
-                    </div>
-                    <div class="card"><h3>Number of sessions</h3>
-                        <input id="nosession" type="number" required>
-                    </div>
-                    <div class="card"><h3>Estimated cost:</h3><p class="cost" id="estimate-cost" role="alert"></p></div>
-                    <button class="btn block" type="submit" id="estimate-btn">
-                        Calculate
-                    </button>
+                            <option value="Undergraduate">Undergraduate</option></select><br><br>
 
+                        <h3>Number of sessions</h3>
+                        <input id="nosession" type="number" required><br><br>
+
+                        <h3>Estimated cost:</h3><p class="cost" id="estimate-cost" role="alert"></p></div>
+                        <button class="btn block" type="submit" id="estimate-btn">
+                            Calculate
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>

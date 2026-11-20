@@ -307,9 +307,9 @@ if (page === "student" || page === "tutor" || page === "admin") loadDashboard();
 
 //Estimate cost
 const PRICING = {
-  "Grade 8 - Grade 9":   { base: 250, extraStudent: 50,  extraSubject: 20 },
-  "Grade 10 - Grade 12": { base: 300, extraStudent: 50,  extraSubject: 20 },
-  "Undergraduate":       { base: 350, extraStudent: 100, extraSubject: 50 }
+  "Grade 8 - Grade 9":   { base: 200, extraStudent: 50,  extraSubject: 20 },
+  "Grade 10 - Grade 12": { base: 250, extraStudent: 50,  extraSubject: 20 },
+  "Undergraduate":       { base: 300, extraStudent: 100, extraSubject: 50 }
 };
 
 const btn          = document.getElementById("estimate-btn");
@@ -387,3 +387,163 @@ btn.addEventListener("click", () => {
   output.textContent = "R" + total.toLocaleString("en-ZA");
 });
 
+
+//Estimate with With an invoice generator
+
+// <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+// <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
+// <div class="card"><h3>Name (for the invoice)</h3>
+//   <input id="clientname" type="text" placeholder="Optional">
+// </div>
+
+// <!-- after the Calculate button -->
+// <button class="btn block" type="button" id="invoice-btn" hidden>Download invoice</button>
+
+// const PRICING = {
+//   "Grade 8 - Grade 9":   { base: 250, extraStudent: 50,  extraSubject: 20 },
+//   "Grade 10 - Grade 12": { base: 300, extraStudent: 50,  extraSubject: 20 },
+//   "Undergraduate":       { base: 350, extraStudent: 100, extraSubject: 50 }
+// };
+
+// const btn        = document.getElementById("estimate-btn");
+// const invoiceBtn = document.getElementById("invoice-btn");
+// const output     = document.getElementById("estimate-cost");
+// const studentsEl = document.getElementById("nostudents");
+// const subjectsEl = document.getElementById("nosubjects");
+// const sessionsEl = document.getElementById("nosession");
+// const gradeEl    = document.getElementById("grade");
+// const nameEl     = document.getElementById("clientname");
+
+// let lastEstimate = null; // holds the most recent calculation
+
+// // Format money for both the page and the PDF
+// function money(n) {
+//   return "R" + n
+//     .toLocaleString("en-ZA", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+//     .replace(/\s/g, " "); // swap special spaces for normal ones so the PDF renders them
+// }
+
+// function enforceRules() {
+//   const students = parseInt(studentsEl.value, 10) || 0;
+//   const subjects = parseInt(subjectsEl.value, 10) || 0;
+
+//   if (students > 1) {
+//     subjectsEl.value = 1;
+//     subjectsEl.disabled = true;
+//   } else {
+//     subjectsEl.disabled = false;
+//   }
+
+//   if (subjects > 1) {
+//     studentsEl.value = 1;
+//     studentsEl.disabled = true;
+//   } else {
+//     studentsEl.disabled = false;
+//   }
+// }
+// studentsEl.addEventListener("input", enforceRules);
+// subjectsEl.addEventListener("input", enforceRules);
+
+// btn.addEventListener("click", () => {
+//   const students = parseInt(studentsEl.value, 10);
+//   const subjects = parseInt(subjectsEl.value, 10);
+//   const sessions = parseInt(sessionsEl.value, 10);
+//   const grade    = gradeEl.value;
+
+//   invoiceBtn.hidden = true;
+//   lastEstimate = null;
+
+//   if (!students || !subjects || !sessions || !grade ||
+//       students < 1 || subjects < 1 || sessions < 1) {
+//     output.textContent = "Please fill in all fields with valid numbers.";
+//     return;
+//   }
+//   if (students > 1 && subjects > 1) {
+//     output.textContent = "You can have more than 1 student or more than 1 subject, but not both.";
+//     return;
+//   }
+
+//   const { base, extraStudent, extraSubject } = PRICING[grade];
+
+//   // Build line items (rate per session)
+//   const items = [];
+//   if (students > 1) {
+//     for (let s = 1; s <= students; s++) {
+//       items.push({ description: `Student ${s} - ${grade}`, rate: base - (s > 1 ? extraStudent : 0) });
+//     }
+//   } else {
+//     for (let sub = 1; sub <= subjects; sub++) {
+//       items.push({ description: `Subject ${sub} - ${grade}`, rate: base - (sub > 1 ? extraSubject : 0) });
+//     }
+//   }
+
+//   const perSession = items.reduce((sum, i) => sum + i.rate, 0);
+//   const total = perSession * sessions;
+
+//   output.textContent = money(total) + " (" + money(perSession) + " per session)";
+
+//   lastEstimate = { items, sessions, perSession, total, grade, students, subjects };
+//   invoiceBtn.hidden = false;
+// });
+
+// invoiceBtn.addEventListener("click", () => {
+//   if (!lastEstimate) return;
+
+//   const { jsPDF } = window.jspdf;
+//   const doc = new jsPDF();
+//   const { items, sessions, total } = lastEstimate;
+
+//   const today = new Date();
+//   const dateStr = today.toLocaleDateString("en-ZA");
+//   const invoiceNo = "INV-" + today.toISOString().slice(0, 10).replace(/-/g, "") +
+//                     "-" + Math.floor(1000 + Math.random() * 9000);
+//   const clientName = nameEl.value.trim() || "Customer";
+
+//   // Header
+//   doc.setFontSize(22);
+//   doc.text("INVOICE", 14, 22);
+
+//   doc.setFontSize(11);
+//   doc.text("Your Tutoring Business Name", 14, 32);   // <-- change
+//   doc.text("your@email.co.za | 012 345 6789", 14, 38); // <-- change
+
+//   doc.text("Invoice no: " + invoiceNo, 140, 22);
+//   doc.text("Date: " + dateStr, 140, 28);
+
+//   doc.setFontSize(12);
+//   doc.text("Bill to:", 14, 54);
+//   doc.setFontSize(11);
+//   doc.text(clientName, 14, 60);
+
+//   // Line items table
+//   doc.autoTable({
+//     startY: 70,
+//     head: [["Description", "Rate / session", "Sessions", "Amount"]],
+//     body: items.map(i => [
+//       i.description,
+//       money(i.rate),
+//       String(sessions),
+//       money(i.rate * sessions)
+//     ]),
+//     headStyles: { fillColor: [40, 40, 40] },
+//     columnStyles: {
+//       1: { halign: "right" },
+//       2: { halign: "right" },
+//       3: { halign: "right" }
+//     }
+//   });
+
+//   // Total
+//   const y = doc.lastAutoTable.finalY + 12;
+//   doc.setFontSize(13);
+//   doc.setFont(undefined, "bold");
+//   doc.text("Total: " + money(total), 196, y, { align: "right" });
+
+//   // Footer
+//   doc.setFont(undefined, "normal");
+//   doc.setFontSize(9);
+//   doc.text("This is an estimate based on the details provided. Thank you!", 14, 285);
+
+//   doc.save(invoiceNo + ".pdf");
+// });
